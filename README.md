@@ -27,11 +27,13 @@ Lets take a look inside the `src` folder
   ```
 - In the root directory create a '.env' file and add the following env variables
 ```
-   PORT=<port number of your choice>
+   PORT=<port number of your choice> and
+   MONGO_URI = <mongo url>
 ```
 ex:
 ```
   PORT=3000
+  MONGO_URI= mongodb+srv://<user_name>:<password>@cluster0.poxbiym.mongodb.net/FomoFactoryAssessment?retryWrites=true&w=majority
 ```
  ```
   npm run dev
