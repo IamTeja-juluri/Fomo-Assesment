@@ -1,7 +1,6 @@
 const { CoinRepository } = require("../repositories");
 const { StatusCodes } = require("http-status-codes");
 const AppError = require("../utils/errors/app-error");
-const { ObjectId } = require("mongodb");
 
 const coinRepository = new CoinRepository();
 
@@ -34,8 +33,7 @@ async function fetchCurrentDataFromApi() {
       throw new Error('Response data is not an array');
     }
 
-    const resp = await coinRepository.insertMany(responseData)
-    console.log("le=",resp.length)
+    await coinRepository.insertMany(responseData)
     return responseData
   } catch (error) { 
     throw new AppError(

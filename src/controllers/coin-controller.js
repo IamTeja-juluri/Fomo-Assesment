@@ -8,8 +8,7 @@ async function fetchCurrentDataFromApi(req, res) {
     SuccessResponse.data =  response ;
     return res.status(200).json(SuccessResponse);
   } catch (error) {
-    console.error("Error fetching data:", error);
-    const ErrorResponse = { error: error.message };
+    ErrorResponse.error = error
     return res.status(error.statusCode || 500).json(ErrorResponse);
   }
 }
@@ -17,12 +16,10 @@ async function fetchCurrentDataFromApi(req, res) {
 async function fetchfromdb(req, res) {
   try {
     const response = await CoinService.fetchfromdb(req.query)
-    console.log(response.length)
     SuccessResponse.data =  response ;
     return res.status(200).json(SuccessResponse);
   } catch (error) {
-    console.error("Error fetching data:", error);
-    const ErrorResponse = { error: error.message };
+    ErrorResponse.error = error
     return res.status(error.statusCode || 500).json(ErrorResponse);
   }
 }
