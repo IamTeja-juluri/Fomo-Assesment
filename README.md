@@ -36,5 +36,5 @@ ex:
   MONGO_URI= mongodb+srv://<user_name>:<password>@cluster0.poxbiym.mongodb.net/FomoFactoryAssessment?retryWrites=true&w=majority
 ```
  ```
-  npm run dev
+  Use this command to start the application : npm run dev
  ```
