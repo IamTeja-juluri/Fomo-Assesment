@@ -3,33 +3,31 @@ import {StatusCodes} from "http-status-codes"
 import AppError from "../utils/errors/app-error";
 import {ICoin} from "../models/coin-model";
 import { ServerConfig } from "../config";
+import axios from "axios";
 
 const coinRepository = new CoinRepository();
 
 async function fetchCurrentDataFromApi(): Promise<ICoin[]> {
   try {
-    const response = await fetch(
-      new Request("https://api.livecoinwatch.com/coins/list"),
+   const response = await axios.post(
+      "https://api.livecoinwatch.com/coins/list",
       {
-        method: "POST",
-        headers: new Headers({
-          "content-type": "application/json",
-          "x-api-key": `${ServerConfig.API_KEY}`,
-        }),
-        body: JSON.stringify({
-          currency: "USD",
-          sort: "rank",
-          order: "ascending",
-          offset: 0,
-          limit: 10,
-          meta: true,
-        }),
+        currency: "USD",
+        sort: "rank",
+        order: "ascending",
+        offset: 0,
+        limit: 10,
+        meta: true,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": ServerConfig.API_KEY,
+        },
       }
     );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const responseData = await response.json();
+    
+    const responseData = response.data;
     if (!Array.isArray(responseData)) {
       throw new Error('Response data is not an array');
     }
