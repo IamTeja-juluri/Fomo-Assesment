@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors"
 import { ServerConfig } from "./config";
 import apiRoutes from "./routes"
+import startScheduler from "./utils/helpers/scheduler";
 
 const app: Application = express();
 app.use(express.json());
@@ -20,13 +21,15 @@ app.use(
 app.use("/api", apiRoutes);
 
 
+
+
 const startServer = async (): Promise<void> => {
   try {
     await mongoose.connect(ServerConfig.MONGO_URI);
     app.listen(ServerConfig.PORT, async () => {
       console.log("Server running on port", ServerConfig.PORT);
     });
-   
+    startScheduler()
   } catch (error) {
     console.error("Error starting server:", error);
     process.exit(1);
