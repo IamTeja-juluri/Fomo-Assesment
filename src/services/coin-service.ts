@@ -1,12 +1,12 @@
-const { CoinRepository } = require("../repositories");
-const { StatusCodes } = require("http-status-codes");
-const AppError = require("../utils/errors/app-error");
-const { ObjectId } = require("mongodb");
+import { CoinRepository } from "../repositories";
+import {StatusCodes} from "http-status-codes"
+import AppError from "../utils/errors/app-error";
+import {ICoin} from "../models/coin-model";
+import { ServerConfig } from "../config";
 
 const coinRepository = new CoinRepository();
 
-
-async function fetchCurrentDataFromApi() {
+async function fetchCurrentDataFromApi(): Promise<ICoin[]> {
   try {
     const response = await fetch(
       new Request("https://api.livecoinwatch.com/coins/list"),
@@ -14,7 +14,7 @@ async function fetchCurrentDataFromApi() {
         method: "POST",
         headers: new Headers({
           "content-type": "application/json",
-          "x-api-key": "6ed9e913-dcee-483a-8919-3dfb9a3c56f4",
+          "x-api-key": `${ServerConfig.API_KEY}`,
         }),
         body: JSON.stringify({
           currency: "USD",
@@ -34,8 +34,7 @@ async function fetchCurrentDataFromApi() {
       throw new Error('Response data is not an array');
     }
 
-    const resp = await coinRepository.insertMany(responseData)
-    console.log("le=",resp.length)
+    await coinRepository.insertMany(responseData)
     return responseData
   } catch (error) { 
     throw new AppError(
@@ -45,7 +44,7 @@ async function fetchCurrentDataFromApi() {
   }
 }
 
-async function fetchfromdb(data) {
+async function fetchfromdb(data: Partial<ICoin>): Promise<ICoin[]> {
   try {
     const response = await coinRepository.get({name:data.name})
     return response
@@ -57,7 +56,9 @@ async function fetchfromdb(data) {
   }
 }
 
-module.exports = {
+
+
+export {
   fetchCurrentDataFromApi,
   fetchfromdb
-};
+}

@@ -34,5 +34,5 @@ ex:
   PORT=3000
 ```
  ```
-  npm run dev
+  Use this command to start the application : npm run dev
  ```

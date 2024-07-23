@@ -1,12 +1,11 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const { ServerConfig } = require("./config");
-const path = require("path");
-const apiRoutes = require("./routes");
+import express, { Application } from "express"
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import cors from "cors"
+import { ServerConfig } from "./config";
+import apiRoutes from "./routes"
 
-const app = express();
+const app: Application = express();
 app.use(express.json());
 app.use(bodyParser.json({ limit: "200mb" }));
 app.use(bodyParser.urlencoded({ limit: "200mb", extended: true }));
@@ -21,7 +20,7 @@ app.use(
 app.use("/api", apiRoutes);
 
 
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
   try {
     await mongoose.connect(ServerConfig.MONGO_URI);
     app.listen(ServerConfig.PORT, async () => {
